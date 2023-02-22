@@ -1,43 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { NotContext } from "../context/NotContext";
 
 const Not = () => {
-  const [notSistem, setNotSistem] = useState("");
-  const [dersSayisi, setDersSayisi] = useState("");
-  const [krediSayisi, setKrediSayisi] = useState("");
-  const [not, setNot] = useState("");
-
-  const onNotSistemHandle = (e) => {
-    setNotSistem(e.target.value);
-  };
-
-  const onDersSayisiHandle = (e) => {
-    setDersSayisi(e.target.value);
-  };
-
-  const notsistem1 = ["AA", "BA", "BB", "CB", "CC", "DC", "DD", "FD", "FF"];
-  const notsistem2 = [
-    "A1",
-    "A2",
-    "A3",
-    "B1",
-    "B2",
-    "B3",
-    "C1",
-    "C2",
-    "C3",
-    "D",
-    "F",
-  ];
-
-  const onKrediSayisiHandle = (e) => {
-    setKrediSayisi(e.target.value);
-  };
-
-  const notHesapla = () => {
-    if (notSistem === "notsistem1") {
-      
-    }
-  };
+  const {
+    notSistem,
+    setNotSistem,
+    dersSayisi,
+    setDersSayisi,
+    isDonem,
+    setIsDonem,
+  } = useContext(NotContext);
 
   return (
     <div className="card-not">
@@ -46,19 +18,30 @@ const Not = () => {
         <div>
           <div>
             <label>
-              <input type="radio" />
+              <input
+                type="radio"
+                name="donemgenel"
+                value="donem"
+                checked={isDonem === true}
+                onChange={() => setIsDonem(true)}
+              />
               Sadece dönem not ortalamasını öğrenmek istiyorum
             </label>
           </div>
           <div>
             <label>
-              <input type="radio" />
+              <input
+                type="radio"
+                name="donemgenel"
+                value="genel"
+                checked={isDonem === false}
+                onChange={() => setIsDonem(false)}
+              />
               Sadece dönem not ortalamasını öğrenmek istiyorum
             </label>
           </div>
         </div>
       </div>
-
       <div className="not-sistem">
         <p>Not Sistemi</p>
         <div>
@@ -69,7 +52,7 @@ const Not = () => {
                 name="notsistem"
                 value="notsistem1"
                 checked={notSistem === "notsistem1"}
-                onChange={onNotSistemHandle}
+                onChange={(e) => setNotSistem(e.target.value)}
               />
               AA, BA, BB, CB, CC, DC, DD, FD, FF
             </label>
@@ -81,17 +64,28 @@ const Not = () => {
                 name="notsistem"
                 value="notsistem2"
                 checked={notSistem === "notsistem2"}
-                onChange={onNotSistemHandle}
+                onChange={(e) => setNotSistem(e.target.value)}
               />
               A1, A2, A3, B1, B2, B3, C1, C2, C3, D, F
             </label>
           </div>
         </div>
       </div>
-
+      {isDonem === false ? (
+        <>
+          <div className="ders-sayisi">
+            <p>Mevcut Toplam Kredi:</p>
+            <input />
+          </div>
+          <div className="ders-sayisi">
+            <p>Mevcut Ortalama:</p>
+            <input />
+          </div>
+        </>
+      ) : null}
       <div className="ders-sayisi">
         <p>Dönem Ders Sayısı:</p>
-        <select onChange={onDersSayisiHandle}>
+        <select onChange={(e) => setDersSayisi(e.target.value)}>
           {[...Array(20)].map((a, index) => {
             return (
               <option
@@ -104,44 +98,6 @@ const Not = () => {
             );
           })}
         </select>
-      </div>
-
-      <div className="ders-olusturma">
-        <div className="ders-kolon">
-          <p>Ders Adı</p>
-          <p>Ders kredi</p>
-          <p>Not</p>
-        </div>
-        <div className="ders-girme">
-          {[...Array(+dersSayisi)].map((x, y) => {
-            return (
-              <div key={y}>
-                <input type="text" />
-                <select onChange={onKrediSayisiHandle}>
-                  {[...Array(31)].map((a, index) => {
-                    return (
-                      <option
-                        key={index}
-                        value={index + 1}
-                        defaultValue={krediSayisi === index + 1}
-                      >{`${index + 1} Kredi`}</option>
-                    );
-                  })}
-                </select>
-                <select>
-                  {notSistem === "notsistem1"
-                    ? notsistem1.map((not1, index) => {
-                        return <option>{not1}</option>;
-                      })
-                    : notsistem2.map((not2, index) => {
-                        return <option>{not2}</option>;
-                      })}
-                </select>
-              </div>
-            );
-          })}
-        </div>
-        <button onClick={notHesapla}>Hesapla</button>
       </div>
     </div>
   );

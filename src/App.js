@@ -1,10 +1,15 @@
 import "./App.css";
 import Not from "./component/Not";
+import ShowNot from "./component/ShowNot";
+import { NotContextProvider } from "./context/NotContext";
 
 function App() {
   return (
     <div className="App">
-     <Not />
+      <NotContextProvider>
+        <Not />
+        <ShowNot />
+      </NotContextProvider>
     </div>
   );
 }
